@@ -1,0 +1,60 @@
+# Как в Linux изменить имя компьютера
+
+Есть несколько способов задать сетевое имя компьютеру с Linux. Рассмотрим примеры на CentOS и Ubuntu без необходимости перезагружать систему.
+
+Файл hostname
+Команда hostnamectl
+
+Узнать текущее имя компьютера можно командой:
+
+hostname
+
+Способ 1. Файл hostname
+Открываем файл с именем компьютера следующей командой
+
+vi /etc/hostname
+
+и пишем имя компьютера, например:
+
+hostname
+
+Чтобы все сервисы начали использовать новое имя, вводим следующую команду
+
+hostname `cat /etc/hostname`
+
+Перезапускаем сетевую службу.
+
+CentOS / Red Hat / Fedora:
+
+systemctl restart network
+
+или
+
+service network restart
+
+Ubuntu / Debian:
+
+systemctl restart networking
+
+или
+
+service networking restart
+
+Способ 2. Команда hostnamectl
+В новых системах на основе systemd (CentOS 7, Ubuntu 15.04 и выше) можно выполнить одну единственную команду:
+
+hostnamectl set-hostname hostname
+
+* перезагрузка не потребуется — новое имя начнет использоваться сразу.
+
+Если, по каким-либо причинам, новое имя не начнет использоваться, вводим:
+
+systemctl restart systemd-hostnamed
+
+Подробнее, статус можно посмотреть командой:
+
+hostnamectl status
+
+Также, можно задать дополнительное для описания имя (прелестное):
+
+hostnamectl set-hostname "Description Name" --pretty
